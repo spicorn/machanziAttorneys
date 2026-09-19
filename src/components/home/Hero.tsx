@@ -5,6 +5,7 @@ import { Container } from '@/components/ui/Container'
 import { site } from '@/data/site'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap } from '@/lib/gsap'
+import { asset } from '@/lib/asset'
 
 export function Hero() {
   const rootRef = useRef<HTMLElement>(null)
@@ -56,14 +57,14 @@ export function Hero() {
         <div data-hero="visual" className="relative mx-auto w-full max-w-lg lg:max-w-none">
           <div className="relative overflow-hidden rounded-[2rem] bg-soft shadow-soft">
             <img
-              src="/images/home.jpg"
+              src={asset('images/home.jpg')}
               alt="Legal counsel at Maruwa Machanzi Attorneys"
               className="aspect-[4/5] w-full object-cover"
             />
           </div>
           <div className="absolute -bottom-6 -left-2 w-[46%] overflow-hidden clover-mask border-4 border-canvas shadow-card md:-left-6 md:w-[42%]">
             <img
-              src="/images/hero-scales.jpg"
+              src={asset('images/hero-scales.jpg')}
               alt="Scales of justice"
               className="aspect-square w-full object-cover"
             />

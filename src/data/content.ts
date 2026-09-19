@@ -1,3 +1,5 @@
+import { asset } from '@/lib/asset'
+
 export const testimonials = [
   {
     quote:
@@ -29,7 +31,7 @@ export const insights = [
       'A short checklist for buyers and sellers so conveyancing stays on schedule.',
     author: 'Belindah Maruwa Machanzi',
     role: 'Senior Partner',
-    image: '/images/hero-scales.jpg',
+    image: asset('images/hero-scales.jpg'),
   },
   {
     title: 'Choosing mediation before litigation',
@@ -37,7 +39,7 @@ export const insights = [
       'When dispute resolution outside court can protect relationships and cost.',
     author: 'Yolanda Chourombo',
     role: 'Senior Associate',
-    image: '/images/meeting.jpg',
+    image: asset('images/meeting.jpg'),
   },
   {
     title: 'Administering an estate with clarity',
@@ -45,6 +47,6 @@ export const insights = [
       'Practical steps for executors navigating wills and succession formalities.',
     author: 'Rutendo Machanzi',
     role: 'Associate',
-    image: '/images/home.jpg',
+    image: asset('images/home.jpg'),
   },
 ] as const

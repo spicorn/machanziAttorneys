@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "node scripts/spa-fallback.mjs",
     "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },

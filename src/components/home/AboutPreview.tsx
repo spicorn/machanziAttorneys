@@ -3,6 +3,7 @@ import { LinkButton } from '@/components/ui/Button'
 import { Container, SectionBadge } from '@/components/ui/Container'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap, revealBatch } from '@/lib/gsap'
+import { asset } from '@/lib/asset'
 
 export function AboutPreview() {
   const rootRef = useRef<HTMLElement>(null)
@@ -37,14 +38,14 @@ export function AboutPreview() {
         <div data-reveal className="grid grid-cols-2 gap-4">
           <div className="overflow-hidden rounded-[1.75rem] shadow-card">
             <img
-              src="/images/meeting.jpg"
+              src={asset('images/meeting.jpg')}
               alt="Client consultation"
               className="aspect-[3/4] h-full w-full object-cover"
             />
           </div>
           <div className="mt-10 overflow-hidden rounded-[1.75rem] shadow-card">
             <img
-              src="/images/attorney-2.jpg"
+              src={asset('images/attorney-2.jpg')}
               alt="Attorney at chambers"
               className="aspect-[3/4] h-full w-full object-cover"
             />

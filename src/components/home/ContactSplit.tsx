@@ -6,6 +6,7 @@ import { Container } from '@/components/ui/Container'
 import { site } from '@/data/site'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap, revealBatch } from '@/lib/gsap'
+import { asset } from '@/lib/asset'
 
 export function ContactSplit() {
   const rootRef = useRef<HTMLElement>(null)
@@ -44,14 +45,14 @@ export function ContactSplit() {
         >
           <div className="relative min-h-[320px] bg-soft">
             <img
-              src="/images/contact.jpg"
+              src={asset('images/contact.jpg')}
               alt="Counsel ready to assist"
               className="absolute inset-0 h-full w-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 max-w-[220px] overflow-hidden rounded-2xl border-4 border-white shadow-card">
               <img
-                src="/images/meeting.jpg"
+                src={asset('images/meeting.jpg')}
                 alt=""
                 className="aspect-[4/3] w-full object-cover"
               />
