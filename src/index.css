@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import "@fontsource/mulish/400.css";
+@import "@fontsource/mulish/500.css";
+@import "@fontsource/mulish/600.css";
+@import "@fontsource/mulish/700.css";
+@import "@fontsource/mulish/800.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/700.css";
+
+@theme {
+  --color-canvas: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-ink: #0b1220;
+  --color-navy: #0a1b33;
+  --color-muted: #667085;
+  --color-soft: #e8ecf1;
+  --color-gold: #c5a35a;
+  --color-gold-deep: #9a7a35;
+  --color-line: #e4e7ec;
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Mulish", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-pill: 999px;
+  --radius-card: 1.75rem;
+  --radius-scoop: 3.5rem;
+
+  --shadow-soft: 0 18px 50px -28px rgb(11 18 32 / 0.28);
+  --shadow-card: 0 12px 40px -20px rgb(11 18 32 / 0.18);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings: "ss01" 1, "kern" 1;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 40%, white);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px white;
+  }
+}
+
+@layer utilities {
+  .pill {
+    @apply inline-flex items-center rounded-[var(--radius-pill)] bg-soft px-3.5 py-1.5 text-xs font-semibold tracking-wide text-ink;
+  }
+
+  .glass-chip {
+    @apply inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-white/35 bg-white/25 px-3.5 py-2 text-sm font-semibold text-white backdrop-blur-md;
+  }
+
+  .expertise-shell {
+    border-radius: var(--radius-card) var(--radius-card) var(--radius-scoop) var(--radius-card);
+  }
+
+  .clover-mask {
+    border-radius: 55% 45% 50% 50% / 45% 50% 50% 55%;
+  }
+
+  .blob-mask {
+    border-radius: 42% 58% 48% 52% / 52% 42% 58% 48%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
