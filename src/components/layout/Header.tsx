@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import { BrandMark } from '@/components/ui/BrandMark'
 import { Container } from '@/components/ui/Container'
 import { LinkButton } from '@/components/ui/Button'
-import { navLinks, site } from '@/data/site'
+import { navLinks } from '@/data/site'
 import { cn } from '@/lib/cn'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 
@@ -27,21 +27,43 @@ export function Header() {
   }, [])
 
   useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
+  useEffect(() => {
     if (reduced || !open) return
     const items = gsap.utils.toArray<HTMLElement>('[data-mobile-link]')
-    gsap.fromTo(
+    const cta = document.querySelector<HTMLElement>('[data-mobile-cta]')
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    tl.fromTo(
       items,
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, stagger: 0.05, duration: 0.35, ease: 'power2.out' },
+      { opacity: 0, y: 18 },
+      { opacity: 1, y: 0, stagger: 0.06, duration: 0.42 },
     )
+    if (cta) {
+      tl.fromTo(
+        cta,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.35 },
+        '-=0.18',
+      )
+    }
+    return () => {
+      tl.kill()
+    }
   }, [open, reduced])
 
   return (
     <header
       className={cn(
         'sticky top-0 z-50 border-b transition-[background,box-shadow,border-color] duration-300',
-        scrolled
-          ? 'border-line bg-surface/90 shadow-soft backdrop-blur-xl'
+        scrolled || open
+          ? 'border-line bg-surface/95 shadow-soft backdrop-blur-xl'
           : 'border-transparent bg-canvas/80 backdrop-blur-md',
       )}
     >
@@ -74,39 +96,66 @@ export function Header() {
 
         <button
           type="button"
-          className="inline-flex size-11 items-center justify-center rounded-[var(--radius-pill)] bg-soft text-ink lg:hidden"
+          className="inline-flex size-11 items-center justify-center rounded-[var(--radius-pill)] bg-soft text-ink transition-colors hover:bg-navy hover:text-white lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          {open ? <X className="size-5" strokeWidth={1.75} /> : <Menu className="size-5" strokeWidth={1.75} />}
         </button>
       </Container>
 
       {open ? (
-        <div id="mobile-nav" className="border-t border-line bg-surface lg:hidden">
-          <Container className="flex flex-col gap-1 py-4">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.to === '/'}
-                data-mobile-link
-                className={({ isActive }) =>
-                  cn(
-                    'rounded-2xl px-4 py-3 text-base font-semibold text-muted',
-                    isActive && 'bg-soft text-ink',
-                  )
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-            <LinkButton href="/contact" withArrow className="mt-3 w-full justify-between">
-              Book a consultation
-            </LinkButton>
-            <p className="mt-3 px-4 text-xs text-muted">{site.phones[0].value}</p>
+        <div
+          id="mobile-nav"
+          className="border-t border-line bg-surface lg:hidden"
+          style={{ height: 'calc(100dvh - 4.25rem)' }}
+        >
+          <Container className="flex h-full flex-col pt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            <nav
+              className="flex flex-1 flex-col justify-center gap-0 overflow-y-auto"
+              aria-label="Mobile"
+            >
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.to === '/'}
+                  data-mobile-link
+                  className={({ isActive }) =>
+                    cn(
+                      'group relative flex items-center gap-3.5 py-3.5 font-display text-[clamp(1.85rem,8vw,2.35rem)] leading-none tracking-tight transition-colors',
+                      isActive
+                        ? 'font-semibold text-ink'
+                        : 'font-medium text-ink/55 hover:text-ink',
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        aria-hidden
+                        className={cn(
+                          'block size-1.5 shrink-0 rounded-full bg-gold transition-opacity duration-300',
+                          isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-40',
+                        )}
+                      />
+                      {link.label}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+
+            <div
+              data-mobile-cta
+              className="shrink-0 border-t border-line pt-5"
+            >
+              <LinkButton href="/contact" withArrow className="w-full justify-between">
+                Book a consultation
+              </LinkButton>
+            </div>
           </Container>
         </div>
       ) : null}

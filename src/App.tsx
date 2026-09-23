@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import { HomePage } from '@/pages/HomePage'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap } from '@/lib/gsap'
@@ -75,7 +76,9 @@ export default function App() {
   const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
   return (
     <BrowserRouter basename={basename || undefined}>
-      <AppShell />
+      <SmoothScroll>
+        <AppShell />
+      </SmoothScroll>
     </BrowserRouter>
   )
 }

@@ -32,6 +32,14 @@ export function ContactPage() {
           </h1>
           <p className="mt-4 max-w-xl text-muted">
             Write, call, or visit chambers at {site.address.line1}, Eastlea.
+            Form messages are sent to{' '}
+            <a
+              href={`mailto:${site.email}`}
+              className="font-semibold text-gold-deep hover:text-ink"
+            >
+              {site.email}
+            </a>
+            .
           </p>
         </Container>
       </section>

@@ -71,7 +71,14 @@ export function ContactSplit() {
               Get in touch
             </h2>
             <p className="mt-2 text-sm text-muted md:text-base">
-              Share a brief outline of your matter. We respond confidentially.
+              Share a brief outline of your matter. 
+              {/* <a
+                href={`mailto:${site.email}`}
+                className="font-semibold text-gold-deep hover:text-ink"
+              >
+                {site.email}
+              </a>
+              . */}
             </p>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">

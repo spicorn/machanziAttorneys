@@ -1,19 +1,21 @@
 import { useLayoutEffect, useRef } from 'react'
 import { LinkButton } from '@/components/ui/Button'
 import { Container, SectionBadge } from '@/components/ui/Container'
+import { TeamGroupPhoto } from '@/components/ui/TeamGroupPhoto'
+import { team } from '@/data/team'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap, revealBatch } from '@/lib/gsap'
-import { asset } from '@/lib/asset'
 
 export function AboutPreview() {
   const rootRef = useRef<HTMLElement>(null)
   const reduced = usePrefersReducedMotion()
+  const sidePortrait =
+    team.find((m) => m.group === 'leadership')?.image ?? team[0].image
 
   useLayoutEffect(() => {
     if (reduced || !rootRef.current) return
     ensureGsap()
-    const cleanup = revealBatch(rootRef.current)
-    return cleanup
+    return revealBatch(rootRef.current)
   }, [reduced])
 
   return (
@@ -27,7 +29,7 @@ export function AboutPreview() {
           <p className="mt-5 max-w-lg text-base leading-relaxed text-muted">
             Maruwa Machanzi Attorneys is a full-service firm registered with the
             Law Society of Zimbabwe. We listen first, frame the mandate clearly,
-            and move with precision  whether the matter is a transfer, a
+            and move with precision — whether the matter is a transfer, a
             commercial agreement, or a dispute.
           </p>
           <LinkButton href="/about" variant="primary" withArrow className="mt-8">
@@ -35,23 +37,14 @@ export function AboutPreview() {
           </LinkButton>
         </div>
 
-        <div data-reveal className="grid grid-cols-2 gap-4">
-          <div className="overflow-hidden rounded-[1.75rem] shadow-card">
+        <div data-reveal className="grid gap-4">
+          <TeamGroupPhoto parallax={false} />
+          <div className="overflow-hidden rounded-[1.75rem] shadow-card sm:hidden">
             <img
-              src={asset('images/meeting.jpg')}
-              alt="Client consultation"
-              className="aspect-[3/4] h-full w-full object-cover"
+              src={sidePortrait}
+              alt="Senior Partner Belindah Maruwa Machanzi"
+              className="aspect-[4/5] w-full object-cover object-top"
             />
-          </div>
-          <div className="mt-10 overflow-hidden rounded-[1.75rem] shadow-card">
-            <img
-              src={asset('images/attorney-2.jpg')}
-              alt="Attorney at chambers"
-              className="aspect-[3/4] h-full w-full object-cover"
-            />
-            <p className="bg-canvas px-4 py-3 text-sm font-semibold text-muted">
-              Reputation for excellence
-            </p>
           </div>
         </div>
       </Container>
