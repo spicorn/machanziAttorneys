@@ -4,14 +4,18 @@ import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { site } from '@/data/site'
+import { sendContactInquiry } from '@/lib/sendContact'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ensureGsap, revealBatch } from '@/lib/gsap'
 import { asset } from '@/lib/asset'
 
+type Status = 'idle' | 'sending' | 'sent' | 'error'
+
 export function ContactSplit() {
   const rootRef = useRef<HTMLElement>(null)
   const reduced = usePrefersReducedMotion()
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
+  const [error, setError] = useState('')
 
   useLayoutEffect(() => {
     if (reduced || !rootRef.current) return
@@ -19,21 +23,34 @@ export function ContactSplit() {
     return revealBatch(rootRef.current, '[data-reveal]', { y: 28, stagger: 0.12 })
   }, [reduced])
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const form = event.currentTarget
     const data = new FormData(form)
     const first = String(data.get('first') ?? '')
     const last = String(data.get('last') ?? '')
-    const email = String(data.get('email') ?? '')
-    const phone = String(data.get('phone') ?? '')
-    const message = String(data.get('message') ?? '')
-    const subject = encodeURIComponent(`Consultation request from ${first} ${last}`)
-    const body = encodeURIComponent(
-      `Name: ${first} ${last}\nEmail: ${email}\nPhone: ${phone}\n\n${message}`,
-    )
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`
-    setSent(true)
+
+    setStatus('sending')
+    setError('')
+
+    try {
+      await sendContactInquiry({
+        name: `${first} ${last}`.trim(),
+        email: String(data.get('email') ?? ''),
+        phone: String(data.get('phone') ?? ''),
+        message: String(data.get('message') ?? ''),
+        company: String(data.get('company') ?? ''),
+      })
+      setStatus('sent')
+      form.reset()
+    } catch (err) {
+      setStatus('error')
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to send your message. Please try again or email us directly.',
+      )
+    }
   }
 
   return (
@@ -71,15 +88,18 @@ export function ContactSplit() {
               Get in touch
             </h2>
             <p className="mt-2 text-sm text-muted md:text-base">
-              Share a brief outline of your matter. 
-              {/* <a
-                href={`mailto:${site.email}`}
-                className="font-semibold text-gold-deep hover:text-ink"
-              >
-                {site.email}
-              </a>
-              . */}
+              Share a brief outline of your matter. We will reply to the email
+              you provide.
             </p>
+
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="pointer-events-none absolute h-0 w-0 opacity-0"
+            />
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <label className="block text-sm font-bold text-ink">
@@ -87,7 +107,9 @@ export function ContactSplit() {
                 <input
                   required
                   name="first"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold"
+                  autoComplete="given-name"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink">
@@ -95,7 +117,9 @@ export function ContactSplit() {
                 <input
                   required
                   name="last"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold"
+                  autoComplete="family-name"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink sm:col-span-2">
@@ -104,7 +128,9 @@ export function ContactSplit() {
                   required
                   type="email"
                   name="email"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold"
+                  autoComplete="email"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink sm:col-span-2">
@@ -112,7 +138,9 @@ export function ContactSplit() {
                 <input
                   name="phone"
                   type="tel"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold"
+                  autoComplete="tel"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink sm:col-span-2">
@@ -121,7 +149,8 @@ export function ContactSplit() {
                   required
                   name="message"
                   rows={4}
-                  className="mt-2 w-full resize-y rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full resize-y rounded-xl border border-line bg-canvas px-4 py-3 font-medium outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
             </div>
@@ -133,13 +162,23 @@ export function ContactSplit() {
             <Button
               type="submit"
               withArrow
+              disabled={status === 'sending'}
               className="mt-6 w-full justify-between"
             >
-              Contact us today
+              {status === 'sending' ? 'Sending…' : 'Contact us today'}
             </Button>
-            {sent ? (
+
+            {status === 'sent' ? (
               <p className="mt-3 text-sm font-semibold text-gold-deep" role="status">
-                Opening your email client…
+                Thank you — your message was sent to {site.email}.
+              </p>
+            ) : null}
+            {status === 'error' ? (
+              <p className="mt-3 text-sm font-semibold text-red-700" role="alert">
+                {error}{' '}
+                <a href={`mailto:${site.email}`} className="underline">
+                  Email us directly
+                </a>
               </p>
             ) : null}
           </form>

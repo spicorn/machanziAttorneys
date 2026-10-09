@@ -41,8 +41,7 @@ export function Hero() {
             Your trusted advisors for legal solutions.
           </h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted md:text-lg">
-            Full-service counsel in Eastlea, Harare  conveyancing, commercial,
-            family, estates, and dispute work delivered with composure.
+          A full service law firm providing tailored legal solutions.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <LinkButton href="/contact" withArrow>

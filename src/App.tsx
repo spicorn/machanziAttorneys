@@ -14,8 +14,8 @@ const AboutPage = lazy(() =>
 const ExpertisePage = lazy(() =>
   import('@/pages/ExpertisePage').then((m) => ({ default: m.ExpertisePage })),
 )
-const PeoplePage = lazy(() =>
-  import('@/pages/PeoplePage').then((m) => ({ default: m.PeoplePage })),
+const TeamPage = lazy(() =>
+  import('@/pages/TeamPage').then((m) => ({ default: m.TeamPage })),
 )
 const ContactPage = lazy(() =>
   import('@/pages/ContactPage').then((m) => ({ default: m.ContactPage })),
@@ -62,7 +62,7 @@ function AppShell() {
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="expertise" element={<ExpertisePage />} />
-            <Route path="people" element={<PeoplePage />} />
+            <Route path="team" element={<TeamPage />} />
             <Route path="contact" element={<ContactPage />} />
           </Routes>
         </Suspense>

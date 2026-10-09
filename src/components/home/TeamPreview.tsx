@@ -40,7 +40,7 @@ export function TeamPreview() {
           {featured.map((member) => (
             <Link
               key={member.name}
-              to="/people"
+              to="/team"
               data-reveal
               className="group relative flex aspect-[3/4] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-navy shadow-card"
             >

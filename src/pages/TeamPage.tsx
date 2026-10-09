@@ -75,7 +75,7 @@ function MemberCard({
   )
 }
 
-export function PeoplePage() {
+export function TeamPage() {
   const rootRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
   const leadership = team.filter((m) => m.group === 'leadership')

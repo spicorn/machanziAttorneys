@@ -122,7 +122,7 @@ export function AboutPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <LinkButton href="/people" variant="gold" withArrow>
+              <LinkButton href="/team" variant="gold" withArrow>
                 Our people
               </LinkButton>
               <LinkButton href="/contact" variant="secondary" withArrow>

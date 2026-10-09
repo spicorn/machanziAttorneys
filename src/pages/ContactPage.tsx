@@ -3,23 +3,40 @@ import { Mail, MapPin, Phone } from 'lucide-react'
 import { Container, SectionBadge } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { site } from '@/data/site'
+import { sendContactInquiry } from '@/lib/sendContact'
+
+type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export function ContactPage() {
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
+  const [error, setError] = useState('')
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const name = String(data.get('name') ?? '')
-    const email = String(data.get('email') ?? '')
-    const phone = String(data.get('phone') ?? '')
-    const message = String(data.get('message') ?? '')
-    const subject = encodeURIComponent(`Consultation request from ${name}`)
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\n${message}`,
-    )
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`
-    setSent(true)
+    const form = event.currentTarget
+    const data = new FormData(form)
+
+    setStatus('sending')
+    setError('')
+
+    try {
+      await sendContactInquiry({
+        name: String(data.get('name') ?? ''),
+        email: String(data.get('email') ?? ''),
+        phone: String(data.get('phone') ?? ''),
+        message: String(data.get('message') ?? ''),
+        company: String(data.get('company') ?? ''),
+      })
+      setStatus('sent')
+      form.reset()
+    } catch (err) {
+      setStatus('error')
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to send your message. Please try again or email us directly.',
+      )
+    }
   }
 
   return (
@@ -32,7 +49,7 @@ export function ContactPage() {
           </h1>
           <p className="mt-4 max-w-xl text-muted">
             Write, call, or visit chambers at {site.address.line1}, Eastlea.
-            Form messages are sent to{' '}
+            Messages are delivered securely to{' '}
             <a
               href={`mailto:${site.email}`}
               className="font-semibold text-gold-deep hover:text-ink"
@@ -83,13 +100,25 @@ export function ContactPage() {
             className="rounded-[1.75rem] border border-line bg-surface p-7 shadow-card md:p-9"
             noValidate
           >
+            {/* Honeypot — hidden from people, traps bots */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="pointer-events-none absolute h-0 w-0 opacity-0"
+            />
+
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-sm font-bold text-ink sm:col-span-2">
                 Full name
                 <input
                   required
                   name="name"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold"
+                  autoComplete="name"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink">
@@ -98,7 +127,9 @@ export function ContactPage() {
                   required
                   type="email"
                   name="email"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold"
+                  autoComplete="email"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink">
@@ -106,7 +137,9 @@ export function ContactPage() {
                 <input
                   name="phone"
                   type="tel"
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold"
+                  autoComplete="tel"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
               <label className="block text-sm font-bold text-ink sm:col-span-2">
@@ -115,16 +148,32 @@ export function ContactPage() {
                   required
                   name="message"
                   rows={5}
-                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold"
+                  disabled={status === 'sending'}
+                  className="mt-2 w-full rounded-xl border border-line bg-canvas px-4 py-3 outline-none focus:border-gold disabled:opacity-60"
                 />
               </label>
             </div>
-            <Button type="submit" withArrow className="mt-6 justify-between sm:min-w-[240px]">
-              Contact us today
+
+            <Button
+              type="submit"
+              withArrow
+              disabled={status === 'sending'}
+              className="mt-6 justify-between sm:min-w-[240px]"
+            >
+              {status === 'sending' ? 'Sending…' : 'Contact us today'}
             </Button>
-            {sent ? (
+
+            {status === 'sent' ? (
               <p className="mt-3 text-sm font-semibold text-gold-deep" role="status">
-                Opening your email client…
+                Thank you — your message was sent to {site.email}.
+              </p>
+            ) : null}
+            {status === 'error' ? (
+              <p className="mt-3 text-sm font-semibold text-red-700" role="alert">
+                {error}{' '}
+                <a href={`mailto:${site.email}`} className="underline">
+                  Email us directly
+                </a>
               </p>
             ) : null}
           </form>
