@@ -1,59 +1,67 @@
-import { useLayoutEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { m } from 'motion/react'
 import { LinkButton } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { site } from '@/data/site'
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { ensureGsap } from '@/lib/gsap'
 import { asset } from '@/lib/asset'
+import {
+  easeOut,
+  presets,
+  staggerContainer,
+  transition,
+} from '@/lib/motion'
 
 export function Hero() {
-  const rootRef = useRef<HTMLElement>(null)
-  const reduced = usePrefersReducedMotion()
-
-  useLayoutEffect(() => {
-    if (reduced || !rootRef.current) return
-    ensureGsap()
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      tl.fromTo(
-        '[data-hero="copy"] > *',
-        { opacity: 0, y: 36 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
-      ).fromTo(
-        '[data-hero="visual"]',
-        { opacity: 0, scale: 0.94, y: 28 },
-        { opacity: 1, scale: 1, y: 0, duration: 1.05 },
-        0.15,
-      )
-    }, rootRef)
-
-    return () => ctx.revert()
-  }, [reduced])
-
   return (
-    <section ref={rootRef} className="relative overflow-hidden bg-canvas pt-6 pb-16 md:pt-10 md:pb-24">
+    <section className="relative overflow-hidden bg-canvas pt-6 pb-16 md:pt-10 md:pb-24">
       <Container className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-        <div data-hero="copy" className="max-w-xl">
-          <span className="pill">{site.society}</span>
-          <h1 className="mt-6 font-display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.02] font-semibold tracking-tight text-ink">
+        <m.div
+          className="max-w-xl"
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+        >
+          <m.span
+            className="pill"
+            variants={presets.fadeDown}
+            transition={transition}
+          >
+            {site.society}
+          </m.span>
+          <m.h1
+            className="mt-6 font-display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.02] font-semibold tracking-tight text-ink"
+            variants={presets.riseBlur}
+            transition={{ ...transition, duration: 0.7 }}
+          >
             Your trusted advisors for legal solutions.
-          </h1>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted md:text-lg">
-          A full service law firm providing tailored legal solutions.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          </m.h1>
+          <m.p
+            className="mt-5 max-w-md text-base leading-relaxed text-muted md:text-lg"
+            variants={presets.fadeLeft}
+            transition={transition}
+          >
+            A full service law firm providing tailored legal solutions.
+          </m.p>
+          <m.div
+            className="mt-8 flex flex-wrap items-center gap-3"
+            variants={presets.softPop}
+            transition={transition}
+          >
             <LinkButton href="/contact" withArrow>
               Schedule your consultation
             </LinkButton>
             <LinkButton href="/expertise" variant="secondary" withArrow>
               Our expertise
             </LinkButton>
-          </div>
-        </div>
+          </m.div>
+        </m.div>
 
-        <div data-hero="visual" className="relative mx-auto w-full max-w-lg lg:max-w-none">
+        <m.div
+          className="relative mx-auto w-full max-w-lg lg:max-w-none"
+          variants={presets.scaleIn}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.8, ease: easeOut, delay: 0.12 }}
+        >
           <div className="relative overflow-hidden rounded-[2rem] bg-soft shadow-soft">
             <img
               src={asset('images/home.jpg')}
@@ -61,14 +69,19 @@ export function Hero() {
               className="aspect-[4/5] w-full object-cover"
             />
           </div>
-          <div className="absolute -bottom-6 -left-2 w-[46%] overflow-hidden clover-mask border-4 border-canvas shadow-card md:-left-6 md:w-[42%]">
+          <m.div
+            className="absolute -bottom-6 -left-2 w-[46%] overflow-hidden clover-mask border-4 border-canvas shadow-card md:-left-6 md:w-[42%]"
+            initial={{ opacity: 0, x: -24, rotate: -4 }}
+            animate={{ opacity: 1, x: 0, rotate: 0 }}
+            transition={{ duration: 0.65, ease: easeOut, delay: 0.4 }}
+          >
             <img
               src={asset('images/hero-scales.jpg')}
               alt="Scales of justice"
               className="aspect-square w-full object-cover"
             />
-          </div>
-        </div>
+          </m.div>
+        </m.div>
       </Container>
     </section>
   )

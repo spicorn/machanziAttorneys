@@ -1,48 +1,50 @@
-import { useLayoutEffect, useRef } from 'react'
 import { Container, SectionIntro } from '@/components/ui/Container'
+import { Reveal } from '@/components/motion/Reveal'
+import { Stagger, StaggerItem } from '@/components/motion/Stagger'
+import { InCard, InCardItem } from '@/components/motion/InCard'
 import { insights } from '@/data/content'
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { ensureGsap, revealBatch } from '@/lib/gsap'
+import type { MotionPreset } from '@/lib/motion'
+
+const insightPresets: MotionPreset[] = ['scaleUp', 'fadeUp', 'fadeLeft']
 
 export function Insights() {
-  const rootRef = useRef<HTMLElement>(null)
-  const reduced = usePrefersReducedMotion()
-
-  useLayoutEffect(() => {
-    if (reduced || !rootRef.current) return
-    ensureGsap()
-    return revealBatch(rootRef.current, '[data-reveal]', { stagger: 0.1 })
-  }, [reduced])
-
   return (
-    <section ref={rootRef} className="bg-surface py-20 md:py-28">
+    <section className="bg-surface py-20 md:py-28">
       <Container>
-        <div data-reveal>
+        <Reveal preset="fadeLeft" soft>
           <SectionIntro
             badge="Blog"
             title="Legal Insights & Resources"
             description="Practical notes on property, disputes, and estates  written for clients who want clarity before they act."
           />
-        </div>
+        </Reveal>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {insights.map((post) => (
-            <article
+        <Stagger className="mt-10 grid gap-6 md:grid-cols-3">
+          {insights.map((post, i) => (
+            <StaggerItem
               key={post.title}
-              data-reveal
-              className="overflow-hidden rounded-[1.75rem] border border-line bg-canvas shadow-card"
+              as="article"
+              preset={insightPresets[i % insightPresets.length]}
             >
-              <img
-                src={post.image}
-                alt=""
-                className="aspect-[16/10] w-full object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-lg font-extrabold text-ink">{post.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
+              <InCard className="lift overflow-hidden rounded-[1.75rem] border border-line bg-canvas shadow-card">
+                <InCardItem preset="scaleUp" className="overflow-hidden">
+                  <img
+                    src={post.image}
+                    alt=""
+                    className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
+                  />
+                </InCardItem>
+                <InCardItem as="h3" preset="fadeLeft" className="px-6 pt-6 text-lg font-extrabold text-ink">
+                  {post.title}
+                </InCardItem>
+                <InCardItem
+                  as="p"
+                  preset="fadeRight"
+                  className="px-6 pt-2 text-sm leading-relaxed text-muted"
+                >
                   {post.excerpt}
-                </p>
-                <div className="mt-6 flex items-center gap-3">
+                </InCardItem>
+                <InCardItem preset="softPop" className="flex items-center gap-3 p-6 pt-6">
                   <span className="flex size-10 items-center justify-center rounded-full bg-navy text-xs font-bold text-gold">
                     {post.author
                       .split(' ')
@@ -54,11 +56,11 @@ export function Insights() {
                     <p className="text-sm font-bold text-ink">{post.author}</p>
                     <p className="text-xs text-muted">{post.role}</p>
                   </div>
-                </div>
-              </div>
-            </article>
+                </InCardItem>
+              </InCard>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </section>
   )

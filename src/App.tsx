@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { lazy, Suspense, useEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { lazy, Suspense } from 'react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { SmoothScroll } from '@/components/layout/SmoothScroll'
+import { MotionProvider } from '@/components/motion/MotionProvider'
+import { PageTransition } from '@/components/motion/PageTransition'
 import { HomePage } from '@/pages/HomePage'
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { ensureGsap } from '@/lib/gsap'
 
 const AboutPage = lazy(() =>
   import('@/pages/AboutPage').then((m) => ({ default: m.AboutPage })),
@@ -34,38 +33,22 @@ function PageFallback() {
 
 function AppShell() {
   const location = useLocation()
-  const mainRef = useRef<HTMLElement>(null)
-  const reduced = usePrefersReducedMotion()
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    ensureGsap()
-    if (reduced || !mainRef.current) return
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        mainRef.current,
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' },
-      )
-    }, mainRef)
-
-    return () => ctx.revert()
-  }, [location.pathname, reduced])
 
   return (
     <div className="flex min-h-dvh flex-col">
       <Header />
-      <main ref={mainRef} className="flex-1">
-        <Suspense fallback={<PageFallback />}>
-          <Routes>
-            <Route index element={<HomePage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="expertise" element={<ExpertisePage />} />
-            <Route path="team" element={<TeamPage />} />
-            <Route path="contact" element={<ContactPage />} />
-          </Routes>
-        </Suspense>
+      <main className="flex-1">
+        <PageTransition routeKey={location.pathname}>
+          <Suspense fallback={<PageFallback />}>
+            <Routes location={location}>
+              <Route index element={<HomePage />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="expertise" element={<ExpertisePage />} />
+              <Route path="team" element={<TeamPage />} />
+              <Route path="contact" element={<ContactPage />} />
+            </Routes>
+          </Suspense>
+        </PageTransition>
       </main>
       <Footer />
     </div>
@@ -76,9 +59,11 @@ export default function App() {
   const basename = import.meta.env.BASE_URL.replace(/\/$/, '')
   return (
     <BrowserRouter basename={basename || undefined}>
-      <SmoothScroll>
-        <AppShell />
-      </SmoothScroll>
+      <MotionProvider>
+        <SmoothScroll>
+          <AppShell />
+        </SmoothScroll>
+      </MotionProvider>
     </BrowserRouter>
   )
 }

@@ -71,6 +71,15 @@
   .blob-mask {
     border-radius: 42% 58% 48% 52% / 52% 42% 58% 48%;
   }
+
+  /* GPU-friendly hover lift — CSS only, no JS cost */
+  .lift {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .lift:hover {
+    transform: translateY(-4px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,5 +93,9 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .lift:hover {
+    transform: none;
   }
 }
