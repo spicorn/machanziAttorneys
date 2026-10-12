@@ -14,7 +14,7 @@ export function Insights() {
         <Reveal preset="fadeLeft" soft>
           <SectionIntro
             badge="Blog"
-            title="Legal Insights & Resources"
+            title="Legal Insights and Resources"
             description="Practical notes on property, disputes, and estates  written for clients who want clarity before they act."
           />
         </Reveal>

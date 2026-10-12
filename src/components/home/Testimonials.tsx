@@ -27,7 +27,7 @@ export function Testimonials() {
               as="article"
               preset={quotePresets[i % quotePresets.length]}
             >
-              <InCard className="lift flex flex-col rounded-[1.75rem] border border-line bg-surface p-7 shadow-card">
+              <InCard className="lift flex h-full flex-col rounded-[1.75rem] border border-line bg-surface p-7 shadow-card">
                 <InCardItem preset="softPop" className="flex items-center gap-2">
                   <div className="flex gap-0.5 text-ink" aria-hidden>
                     {Array.from({ length: 5 }).map((_, j) => (

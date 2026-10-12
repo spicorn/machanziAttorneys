@@ -24,7 +24,7 @@ export type PracticeArea = {
 export const practiceAreas: PracticeArea[] = [
   {
     slug: 'conveyancing-notarial',
-    title: 'Conveyancing & Notarial',
+    title: 'Conveyancing and Notarial',
     summary: 'Property transfers, registrations, and notarial instruments handled with exacting care.',
     detail:
       'From transfers and bond registrations to notarial deeds and authentication, we guide clients through Zimbabwe’s property and documentary formalities with clarity and pace.',
@@ -80,7 +80,7 @@ export const practiceAreas: PracticeArea[] = [
   },
   {
     slug: 'arbitration-dispute-resolution',
-    title: 'Arbitration & Dispute Resolution',
+    title: 'Arbitration and Dispute Resolution',
     summary: 'Negotiation, mediation, and arbitration pathways that resolve without unnecessary delay.',
     detail:
       'Not every conflict belongs in open court. We pursue negotiated, mediated, and arbitral routes that protect commercial relationships and control cost.',

@@ -25,7 +25,7 @@ export const team: TeamMember[] = [
     credentials: 'LLB (Hons) UZ',
     email: 'belindahmachanzi@gmail.com',
     group: 'leadership',
-    focus: 'Commercial & litigation',
+    focus: 'Commercial and litigation',
     image: belindah,
   },
   {
@@ -34,7 +34,7 @@ export const team: TeamMember[] = [
     credentials: 'LLB (Hons) UZ',
     email: 'chouromboyolanda@gmail.com',
     group: 'associates',
-    focus: 'Conveyancing & notarial',
+    focus: 'Conveyancing and notarial',
     image: yolanda,
   },
   {
@@ -50,12 +50,12 @@ export const team: TeamMember[] = [
     credentials: 'BLS (UZ), BLR (LR)',
     email: 'rutendomachanzi35@gmail.com',
     group: 'associates',
-    focus: 'Estates & advisory',
+    focus: 'Estates and advisory',
     image: rutendo,
   },
   {
     name: 'Paidamoyo Jaya',
-    role: 'Admin & Receptionist',
+    role: 'Admin and Receptionist',
     group: 'admin',
     image: paidamoyo,
   },

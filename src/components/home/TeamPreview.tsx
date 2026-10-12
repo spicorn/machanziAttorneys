@@ -42,15 +42,15 @@ export function TeamPreview() {
             >
               <Link
                 to="/team"
-                className="group relative flex aspect-[3/4] flex-col justify-end overflow-hidden rounded-[1.75rem] bg-navy shadow-card"
+                className="group relative flex aspect-[3/4] flex-col overflow-hidden rounded-[1.75rem] bg-navy shadow-card"
               >
                 <img
                   src={member.image}
                   alt={member.name}
                   className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-transparent" />
-                <InCard className="relative m-3" fast>
+                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent" />
+                <InCard className="absolute inset-x-0 bottom-0 z-10 p-3" fast>
                   <InCardItem
                     preset="riseBlur"
                     className="rounded-2xl border border-white/25 bg-white/15 p-3 backdrop-blur-md"

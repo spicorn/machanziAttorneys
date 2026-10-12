@@ -32,7 +32,7 @@ export function InCard({
   const variants = fast ? staggerFast : staggerContainer
   const motionProps = {
     id,
-    className: cn('h-full', className),
+    className: cn(className),
     variants,
     initial: 'hidden' as const,
     whileInView: 'visible' as const,
