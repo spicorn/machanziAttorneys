@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import { ReactLenis, type LenisRef } from 'lenis/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -13,6 +14,7 @@ import 'lenis/dist/lenis.css'
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion()
   const lenisRef = useRef<LenisRef>(null)
+  const { pathname, hash } = useLocation()
 
   useEffect(() => {
     if (reduced) return
@@ -38,6 +40,12 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       ScrollTrigger.refresh()
     }
   }, [reduced])
+
+  // Jump Lenis to top on navigation (keeps new pages from opening mid-scroll)
+  useEffect(() => {
+    if (reduced || hash) return
+    lenisRef.current?.lenis?.scrollTo(0, { immediate: true })
+  }, [pathname, hash, reduced])
 
   if (reduced) return children
 
