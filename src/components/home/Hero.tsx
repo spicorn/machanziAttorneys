@@ -32,7 +32,7 @@ export function Hero() {
             variants={presets.riseBlur}
             transition={{ ...transition, duration: 0.7 }}
           >
-            Your trusted advisors for legal solutions.
+            Your trusted legal advisors.
           </m.h1>
           <m.p
             className="mt-5 max-w-md text-base leading-relaxed text-muted md:text-lg"

@@ -39,7 +39,7 @@ export async function sendContactInquiry(inquiry: ContactInquiry): Promise<void>
       },
       body: JSON.stringify({
         access_key: accessKey,
-        subject: `Consultation request — ${name}`,
+        subject: `Consultation request ${name}`,
         from_name: name,
         email,
         phone,
@@ -67,7 +67,7 @@ export async function sendContactInquiry(inquiry: ContactInquiry): Promise<void>
         email,
         phone,
         message,
-        _subject: `Consultation request — ${name}`,
+        _subject: `Consultation request ${name}`,
         _template: 'table',
         _captcha: 'false',
         _replyto: email,
