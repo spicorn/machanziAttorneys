@@ -31,7 +31,7 @@ export const team: TeamMember[] = [
   {
     name: 'Yolanda Chourombo',
     role: 'Senior Associate',
-    credentials: 'LLB (Hons) UZ',
+    credentials: 'LLB (Hons) UZ, LLM (UZ)',
     email: 'chouromboyolanda@gmail.com',
     group: 'associates',
     focus: 'Conveyancing and notarial',
@@ -40,6 +40,8 @@ export const team: TeamMember[] = [
   {
     name: 'Rose Mayanda',
     role: 'Associate',
+    credentials: 'LLB (UNISA), MBA (University of Gloucestershire)',
+    email: 'rosemayanda@gmail.com',
     group: 'associates',
     focus: 'Family law',
     image: rose,
@@ -47,7 +49,7 @@ export const team: TeamMember[] = [
   {
     name: 'Rutendo Machanzi',
     role: 'Associate',
-    credentials: 'BLS (UZ), BLR (LR)',
+    credentials: 'BLS (UZ), BLR (LR), BLP (UZ)',
     email: 'rutendomachanzi35@gmail.com',
     group: 'associates',
     focus: 'Estates and advisory',

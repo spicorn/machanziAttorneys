@@ -28,18 +28,26 @@ export function Hero() {
             {site.society}
           </m.span>
           <m.h1
-            className="mt-6 font-display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.02] font-semibold tracking-tight text-ink"
+            className="mt-6 font-display text-[clamp(2.4rem,5.5vw,4.2rem)] leading-[1.02] font-semibold tracking-tight text-ink"
             variants={presets.riseBlur}
             transition={{ ...transition, duration: 0.7 }}
           >
-            Your trusted legal advisors.
+            {site.name}
           </m.h1>
           <m.p
-            className="mt-5 max-w-md text-base leading-relaxed text-muted md:text-lg"
+            className="mt-4 text-lg font-semibold text-ink/80 md:text-xl"
+            variants={presets.fadeUp}
+            transition={transition}
+          >
+            Your trusted legal advisors in Harare.
+          </m.p>
+          <m.p
+            className="mt-3 max-w-md text-base leading-relaxed text-muted md:text-lg"
             variants={presets.fadeLeft}
             transition={transition}
           >
-            A full service law firm providing tailored legal solutions.
+            A full-service law firm in Eastlea providing tailored legal
+            solutions across conveyancing, commercial, family and dispute work.
           </m.p>
           <m.div
             className="mt-8 flex flex-wrap items-center gap-3"

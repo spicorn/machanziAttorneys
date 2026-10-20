@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import { ScrollToTop } from '@/components/layout/ScrollToTop'
+import { Seo } from '@/components/seo/Seo'
 import { MotionProvider } from '@/components/motion/MotionProvider'
 import { PageTransition } from '@/components/motion/PageTransition'
 import { HomePage } from '@/pages/HomePage'
@@ -37,6 +38,7 @@ function AppShell() {
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <Seo />
       <ScrollToTop />
       <Header />
       <main className="flex-1">
