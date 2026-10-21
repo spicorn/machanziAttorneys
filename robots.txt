@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://spicorn.github.io/machanziAttorneys/sitemap.xml
+Sitemap: https://maruwamachanzi.co.zw/sitemap.xml
