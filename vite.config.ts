@@ -6,13 +6,13 @@ import { fileURLToPath } from 'node:url'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
-export default defineConfig(({ command }) => ({
-  // Live site: https://spicorn.github.io/machanziAttorneys/
-  base: command === 'build' ? '/machanziAttorneys/' : '/',
+export default defineConfig({
+  // Custom domain https://maruwamachanzi.co.zw serves from the site root
+  base: '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(rootDir, './src'),
     },
   },
-}))
+})

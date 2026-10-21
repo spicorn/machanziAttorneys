@@ -1,5 +1,5 @@
-/** Canonical public URL (GitHub Pages project site). */
-export const siteUrl = 'https://spicorn.github.io/machanziAttorneys'
+/** Canonical public URL (custom domain). */
+export const siteUrl = 'https://maruwamachanzi.co.zw'
 
 export const site = {
   name: 'Maruwa Machanzi Attorneys',
