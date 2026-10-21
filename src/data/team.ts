@@ -49,7 +49,7 @@ export const team: TeamMember[] = [
   {
     name: 'Rutendo Machanzi',
     role: 'Associate',
-    credentials: 'BLS (UZ), BLR (LR), BLP (UZ)',
+    credentials: 'BLS (UZ), BLP (UZ)',
     email: 'rutendo@maruwamachanzi.co.zw',
     group: 'associates',
     focus: 'Estates and advisory',
